@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rauschmelder/user_state.dart';
 import 'dart:math' as math;
+import 'package:styled_widget/styled_widget.dart';
 
 
 class DrunkenStatus extends StatelessWidget {
@@ -40,15 +42,20 @@ class DrunkenStatus extends StatelessWidget {
     return FutureBuilder(
         future: model.load(),
         builder: (context, snapshot) {
+          var text = "";
           if (snapshot.connectionState == ConnectionState.done) {
             var score = model.drinks.isEmpty ? 0.0 : model.drinks.map((e) => e.getScore()).sum;
             var userName = model.userName!;
-            return Text(getRandomText(userName, score));
+            text = getRandomText(userName, score);
           } else if (snapshot.hasError) {
-            return const Text("Berauschter user hat ein problem beim trinken");
+            text = "Berauschter user hat ein problem beim trinken";
           } else {
-            return const Text("Am Bar nachfüllen....");
+            text = "Am Bar nachfüllen....";
           }
+          return Text(text)
+              .textColor(Colors.white)
+              .fontSize(15)
+              .fontWeight(FontWeight.w500);
         },);
   }
 }

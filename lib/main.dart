@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:rauschmelder/drink_selection.dart';
 import 'package:rauschmelder/login.dart';
