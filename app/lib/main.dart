@@ -11,6 +11,7 @@ import 'package:rauschmelder/services/location_service.dart';
 import 'package:rauschmelder/widgets/authentication/bloc/authentication_bloc.dart';
 import 'package:rauschmelder/widgets/location/bloc/location_bloc.dart';
 import 'package:rauschmelder/widgets/location/bloc/location_event.dart';
+import 'package:rauschmelder/widgets/login/bloc/login_bloc.dart';
 import 'package:rauschmelder/widgets/party/bloc/party_listing_bloc.dart';
 import 'package:rauschmelder/widgets/user/bloc/user_bloc.dart';
 import 'package:rauschmelder/widgets/user/user_state.dart';
@@ -82,6 +83,9 @@ class MyApp extends StatelessWidget {
               create: (context) => AuthenticationBloc(
                   authenticationService: authenticationService)
                 ..add(AppLoaded())),
+          BlocProvider<LoginBloc>(
+              create: (context) => LoginBloc(
+                  authenticationService: authenticationService, authenticationBloc: context.read<AuthenticationBloc>())),
           BlocProvider<LocationBloc>(
               create: (context) => LocationBloc(
                   locationRepository: context.read<LocationRepository>())
