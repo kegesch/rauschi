@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter};
 use h3ron::H3Cell;
-use rocket::serde::{json::Json, Deserialize, Serialize};
+use rocket::serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct PartyKey {

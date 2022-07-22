@@ -1,9 +1,8 @@
-use std::borrow::BorrowMut;
 use crate::types::geo::PartyKey;
 use crate::types::Location;
 use crate::types::parties::Party;
 use thiserror::Error;
-use crate::services::party_manager::PartyError::{AlreadyExists, UnknownParty};
+use crate::services::party_manager::PartyError::{AlreadyExists};
 use rocket::serde::Serialize;
 use crate::types::users::Participant;
 

@@ -3,7 +3,6 @@ use geo_types::Coordinate;
 use h3ron::{H3Cell, Index};
 use rocket::futures::lock::Mutex;
 use rocket::http::Status;
-use rocket::request::FromParam;
 use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket::State;
 use crate::{H3_PRECISION, PartyManager};

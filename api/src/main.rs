@@ -7,6 +7,9 @@ mod services;
 mod cors;
 
 use std::sync::Arc;
+use bonsaidb::local::config::{Builder, StorageConfiguration};
+use bonsaidb::local::{AsyncDatabase};
+use platform_dirs::AppDirs;
 use routes::drinks::{get_drinks, add_drink};
 use routes::user::{create_user, validate_user, take_a_drink, get_drink_value};
 use routes::parties::{get_near_parties, create_party, join_party};
@@ -16,15 +19,15 @@ use rocket::futures::lock::Mutex;
 use crate::cors::CORS;
 use crate::services::drink_manager::DrinkManager;
 use crate::services::party_manager::PartyManager;
-use crate::services::user_manager::UserManager;
+use services::user_management::bonsai_db_user_manager::DatabaseUserManager;
+use crate::services::user_management::UserManagement;
+use crate::types::db_schema::DbSchema;
 
 const H3_PRECISION: u8 = 10;
 
-
-pub fn configure(
-) -> Rocket<Build> {
+pub fn configure(db: AsyncDatabase) -> Rocket<Build> {
     let party_manager = Arc::new(Mutex::new(PartyManager::default()));
-    let user_manager = Arc::new(Mutex::new(UserManager::default()));
+    let user_manager = Arc::new(Mutex::new(DatabaseUserManager::new(db))) as Arc<Mutex<dyn UserManagement>>;
     let drink_manager = Arc::new(Mutex::new(DrinkManager::default()));
 
     rocket::build()
@@ -41,6 +44,11 @@ pub fn configure(
 
 //noinspection RsMainFunctionNotFound
 #[launch]
-fn rocket() -> _ {
-    configure()
+async fn rocket() -> _ {
+    let database_dir = AppDirs::new(Some("rauschmelder"), false).unwrap().data_dir;
+    let database_file = database_dir.join("db.bonsaidb");
+
+    let db = AsyncDatabase::open::<DbSchema>(StorageConfiguration::new(database_file)).await.expect("Could not open database");
+
+    configure(db)
 }

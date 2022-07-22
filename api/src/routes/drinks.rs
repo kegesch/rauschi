@@ -1,6 +1,5 @@
 use std::sync::Arc;
 use rocket::futures::lock::Mutex;
-use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
 use crate::DrinkManager;

@@ -1,9 +1,9 @@
-use h3ron::{H3Cell, Index};
+use h3ron::{Index};
 use crate::types::geo::PartyKey;
 use crate::types::Location;
 use crate::types::users::Participant;
 
-use rocket::serde::{json::Json, Deserialize, Serialize};
+use rocket::serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Party {
