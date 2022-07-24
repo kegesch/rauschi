@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use geo_types::Coordinate;
-use h3ron::{H3Cell, Index};
+use h3ron::H3Cell;
 use rocket::futures::lock::Mutex;
 use rocket::http::Status;
 use rocket::serde::{json::Json, Deserialize, Serialize};
@@ -17,9 +17,9 @@ pub struct Location {
     latitude: f64,
 }
 
-impl Into<H3Cell> for Location {
-    fn into(self) -> H3Cell {
-        H3Cell::from_coordinate(&Coordinate::from((self.longitude, self.latitude)), H3_PRECISION).expect("Unexpected Coordinate")
+impl From<Location> for H3Cell {
+    fn from(loc: Location) -> Self {
+        H3Cell::from_coordinate(&Coordinate::from((loc.longitude, loc.latitude)), H3_PRECISION).expect("Unexpected Coordinate")
     }
 }
 
@@ -37,7 +37,9 @@ pub async fn create_party(request: Json<CreatePartyRequest>, party_manager: &Sta
     println!("Created a new party {} for location {}", name, h3.to_string());
 
     let party = Party::create(name.as_str(), h3);
-    party_manager.lock().await.add_party(party);
+    if party_manager.lock().await.add_party(party).is_err() {
+        return Status::AlreadyReported;
+    };
 
     Status::Ok
 }

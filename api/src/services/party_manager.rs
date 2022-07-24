@@ -30,11 +30,11 @@ impl PartyManager {
     }
 
     pub fn party_exists(&self, party_key: &PartyKey) -> bool {
-        self.parties.iter().find(|p| &p.key == party_key).is_some()
+        self.parties.iter().any(|p| &p.key == party_key)
     }
 
     pub fn join_party(&mut self, key: PartyKey, participant: Participant) -> Result<(), PartyError> {
-        let mut party_ref = self.parties.iter_mut().find(|p| p.key == key);
+        let party_ref = self.parties.iter_mut().find(|p| p.key == key);
 
         if let Some(p) = party_ref{
             p.join(participant);
@@ -45,6 +45,6 @@ impl PartyManager {
     }
 
     pub fn get_parties_close_to(&self, location: Location) -> Vec<Party> {
-        self.parties.iter().filter(|p| p.is_close_to(location)).map(|p|p.clone()).collect()
+        self.parties.iter().filter(|p| p.is_close_to(location)).cloned().collect()
     }
 }

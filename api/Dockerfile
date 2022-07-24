@@ -4,7 +4,7 @@
 FROM rust:1.62.0 AS builder
 
 RUN rustup target add x86_64-unknown-linux-musl
-RUN apt update && apt install -y musl-tools musl-dev libclang-dev cmake
+RUN apt update && apt install -y musl-tools musl-dev libclang-dev cmake libgdal-dev
 RUN update-ca-certificates
 
 # Create appuser

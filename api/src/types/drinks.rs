@@ -9,7 +9,7 @@ pub struct Drink {
 }
 
 impl Drink {
-    pub fn new(amount: f32, name: String, emoji: String, alcohol: f32) -> Self {
+    pub fn _new(amount: f32, name: String, emoji: String, alcohol: f32) -> Self {
         Drink { amount, name, emoji, alcohol }
     }
 }

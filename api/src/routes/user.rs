@@ -7,7 +7,7 @@ use rocket::{Request, State};
 use rocket::response::{Responder};
 use serde_json::json;
 use crate::services::user_management::{UserError, UserManagement};
-use crate::types::users::{UniqueUser, UserIdentification};
+use crate::types::users::{UserIdentification};
 use thiserror::Error;
 
 #[derive(Error, Debug)]

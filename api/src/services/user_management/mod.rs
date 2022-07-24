@@ -13,11 +13,11 @@ pub enum UserError {
 }
 
 fn cleanup_drinks(relative_time: &DateTime<Utc>, drink_values: &mut Vec<DrinkValue>) {
-    drink_values.retain(|v| !((relative_time.clone() - v.0).num_hours() as f64 >= v.1 / REDUCE_AMOUNT_PER_HOUR))
+    drink_values.retain(|v| !((*relative_time - v.0).num_hours() as f64 >= v.1 / REDUCE_AMOUNT_PER_HOUR))
 }
 
 fn get_random_4numbers() -> u16 {
-    let mut rng = rand::thread_rng().gen_range(0..9999);
+    let rng = rand::thread_rng().gen_range(0..9999);
     rng as u16
 }
 
@@ -38,7 +38,7 @@ use crate::types::users::{UniqueUser, UserIdentification, UserInformation};
 pub type DrinkValue = (DateTime<Utc>, f64);
 
 #[async_trait]
-pub(crate) trait UserManagement: Send + Sync {
+pub trait UserManagement: Send + Sync {
     async fn user_already_exists(&self, name: &str, number: u16) -> Result<bool, UserError>;
     async fn valid_user_identification(&self, name: String, number: u16, secret: String) -> Result<bool, UserError> ;
     async fn add_user(&self, user: UserInformation) -> Result<(), UserError>;
