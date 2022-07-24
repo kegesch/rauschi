@@ -4,7 +4,7 @@
 FROM rust:1.62.0 AS builder
 
 RUN rustup target add x86_64-unknown-linux-musl
-RUN apt update && apt install -y musl-tools musl-dev libclang-dev cmake libgdal-dev
+RUN apt update && apt install -y musl-tools musl-dev libclang-dev cmake libgdal-dev clang libc++-dev build-essential autoconf libtool pkg-config
 RUN update-ca-certificates
 
 # Create appuser
@@ -36,12 +36,12 @@ FROM alpine:latest
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 
-WORKDIR /myapp
+WORKDIR /api
 
 # Copy our build
-COPY --from=builder /myapp/target/x86_64-unknown-linux-musl/release/myapp ./
+COPY --from=builder /api/target/x86_64-unknown-linux-musl/release/api ./
 
 # Use an unprivileged user.
-USER myapp:myapp
+USER api:api
 
-CMD ["/myapp/myapp"]
+CMD ["/api/api"]
