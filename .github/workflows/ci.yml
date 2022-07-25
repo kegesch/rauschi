@@ -29,22 +29,15 @@ jobs:
           rustc --version
           cargo clippy --version          
 
-      - name: Build Docker image
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP }}/api:latest .
-
-      - name: Docker image info
-        run: docker images
-
       - name: Login to container registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
 
-      - name: Push Docker image
-        # see here for the details of the release phase https://devcenter.heroku.com/articles/container-registry-and-runtime#release-phase
-        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP }}/api
+      - name: Build Docker image
+        run: heroku container:push web
 
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:release -a ${{ secrets.HEROKU_APP }} api
+        run: heroku container:release -a rauschmelder-api web
