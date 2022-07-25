@@ -8,7 +8,7 @@ RUN apt update && apt install -y musl-tools musl-dev libclang-dev cmake libgdal-
 RUN update-ca-certificates
 
 # Create appuser
-ENV USER=myapp
+ENV USER=api
 ENV UID=10001
 
 RUN adduser \
@@ -21,7 +21,7 @@ RUN adduser \
     "${USER}"
 
 
-WORKDIR /myapp
+WORKDIR /api
 
 COPY ./ .
 
