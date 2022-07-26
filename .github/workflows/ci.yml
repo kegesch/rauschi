@@ -35,7 +35,7 @@ jobs:
         run: heroku container:login
 
       - name: Build Docker image
-        run: heroku container:push web
+        run: heroku container:push -a rauschmelder-api web
 
       - name: Release
         env:
