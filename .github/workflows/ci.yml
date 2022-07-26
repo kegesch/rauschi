@@ -5,10 +5,6 @@ on:
     branches:
       - master
 
-defaults:
-  run:
-    working-directory: api
-
 jobs:
 
   test:
@@ -36,7 +32,7 @@ jobs:
           # (Optional, default: "./")
           # Dockerfile directory.
           # For example, if you have a Dockerfile in the root of your project, leave it as follows:
-          dockerfile_directory: ./
+          dockerfile_directory: ./api
 
           # (Optional, default: "Dockerfile")
           # Dockerfile name.
